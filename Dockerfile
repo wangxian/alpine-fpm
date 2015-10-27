@@ -1,11 +1,6 @@
 FROM alpine:latest
 MAINTAINER WangXian <xian366@126.com>
 
-ADD php-fpm.conf /etc/php/
-
-WORKDIR /app
-VOLUME /app
-
 RUN apk --update add \
         git curl openssl \
         php-fpm php-mcrypt php-curl php-gd php-json php-openssl \
@@ -14,6 +9,11 @@ RUN apk --update add \
   && mkdir -p /app/logs \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+WORKDIR /app
+VOLUME /app
+
+ADD php-fpm.conf /etc/php/
+ADD logs logs
 
 EXPOSE 9000
 CMD ["php-fpm", "-F"]
